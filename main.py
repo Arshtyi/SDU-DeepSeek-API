@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import sduwrap
 from sduwrap import ChatConfig
-
+from typing import Generator
 from fastapi import Request, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,7 +21,7 @@ app.add_middleware(
  )
 
 # 假设这是用户已有的生成器函数（需自行实现具体逻辑）
-def chat(content: str, history: list, config: ChatConfig) -> str:
+def chat(content: str, history: list, config: ChatConfig) -> Generator[str, None, None]:
     request_history = []
     for chat_session in history:
         cs = sduwrap.ChatSession()
@@ -165,4 +165,4 @@ if __name__ == "__main__":
         with open("./cookies.json", "w") as f:
             json.dump(cookies, f)
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)
